@@ -301,8 +301,8 @@ class MultiCameraClient(ctx: Context, callback: IDeviceConnectCallBack?) {
 
         private val buttonCallBack = IButtonCallback { button ->
             button?.apply {
-                val b
-                val s
+                val b = 0
+                val s = 0
                 mButtonCallBack?.onPreviewData(b, s)
             }
         }
