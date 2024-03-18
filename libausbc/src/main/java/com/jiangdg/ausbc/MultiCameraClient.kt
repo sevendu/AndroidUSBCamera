@@ -299,11 +299,11 @@ class MultiCameraClient(ctx: Context, callback: IDeviceConnectCallBack?) {
             }
         }
 
-        private val buttonCallBack = IButtonCallback { button ->
-            button?.apply {
-                Int b = 0
-                Int s = 0
-                mButtonCallBack?.onButton(b, s)
+        private val buttonCallBack = IButtonCallback { buttonCall ->
+            buttonCall?.apply {
+                val button = 0
+                val state = 0
+                mButtonCallBack?.onButton(button, state)
             }
         }
         override fun handleMessage(msg: Message): Boolean {
