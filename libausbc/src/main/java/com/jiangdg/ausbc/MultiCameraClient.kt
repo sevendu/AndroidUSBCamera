@@ -856,7 +856,7 @@ class MultiCameraClient(ctx: Context, callback: IDeviceConnectCallBack?) {
 
         /**
          * Add button call back
-         *
+         * 按钮触发拍照
          * @param callBack camera button call back, see [IButtonCallBack]
          */
         fun addButtonCallBack(callBack: IButtonCallBack) {
