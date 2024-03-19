@@ -593,7 +593,7 @@ class MultiCameraClient(ctx: Context, callback: IDeviceConnectCallBack?) {
          * @param zoom zoom value, 0 means reset
          */
         fun setZoom(zoom: Int) {
-            mUvcCamera?.zoom = zoom
+            mUvcCamera?.setZoom(zoom)
         }
 
         /**
