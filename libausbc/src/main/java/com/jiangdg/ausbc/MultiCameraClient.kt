@@ -257,6 +257,7 @@ class MultiCameraClient(ctx: Context, callback: IDeviceConnectCallBack?) {
         private var mUvcCamera: UVCCamera? = null
         private var mPreviewCallback: IPreviewDataCallBack? = null
         private var mEncodeDataCallBack: IEncodeDataCallBack? = null
+        private var mButtonCallBack: IButtonCallBack? = null
         private var mAudioProcess: AbstractProcessor? = null
         private var mVideoProcess: AbstractProcessor? = null
         private var mCtrlBlock: USBMonitor.UsbControlBlock? = null
@@ -294,6 +295,14 @@ class MultiCameraClient(ctx: Context, callback: IDeviceConnectCallBack?) {
                     }
                     YUVUtils.nv21ToYuv420sp(data, width, height)
                     mVideoProcess?.putRawData(RawData(data, data.size))
+                }
+            }
+        }
+
+        private val buttonCallback = IButtonCallback { button, state ->
+            button?.apply {
+                state?.apply {
+                    mButtonCallBack?.onButton(button, state)
                 }
             }
         }
@@ -432,6 +441,7 @@ class MultiCameraClient(ctx: Context, callback: IDeviceConnectCallBack?) {
                 }
             }
             mUvcCamera?.setFrameCallback(frameCallBack, UVCCamera.PIXEL_FORMAT_YUV420SP)
+            mUvcCamera?.setButtonCallback(buttonCallback)
             // 3. start preview
             mCameraView = cameraView ?: mCameraView
             when(cameraView) {
@@ -843,6 +853,16 @@ class MultiCameraClient(ctx: Context, callback: IDeviceConnectCallBack?) {
         fun addPreviewDataCallBack(callBack: IPreviewDataCallBack) {
             this.mPreviewCallback = callBack
         }
+
+        /**
+         * Add button call back
+         *
+         * @param callBack camera button call back, see [IButtonCallBack]
+         */
+        fun addButtonCallBack(callBack: IButtonCallBack) {
+            this.mButtonCallBack = callBack
+        }
+
 
         /**
          * Get usb device information
