@@ -492,18 +492,18 @@ class MultiCameraClient(ctx: Context, callback: IDeviceConnectCallBack?) {
                 if (! CameraUtils.hasStoragePermission(ctx)) {
                     mMainHandler.post { callback.onError("have no storage permission") }
                     Logger.e(TAG ,"open camera failed, have no storage permission")
-                    return@submit
+                   // return@submit
                 }
                 if (! isPreviewed || mPreviewSize == null) {
                     mMainHandler.post { callback.onError("camera not previewing") }
                     Logger.i(TAG, "captureImageInternal failed, camera not previewing")
-                    return@submit
+                    //return@submit
                 }
                 val data = mNV21DataQueue.pollFirst(CAPTURE_TIMES_OUT_SEC, TimeUnit.SECONDS)
                 if (data == null) {
                     mMainHandler.post { callback.onError("Times out") }
                     Logger.i(TAG, "captureImageInternal failed, times out.")
-                    return@submit
+                    //return@submit
                 }
                 mMainHandler.post { callback.onBegin() }
                 val date = mDateFormat.format(System.currentTimeMillis())
@@ -547,7 +547,7 @@ class MultiCameraClient(ctx: Context, callback: IDeviceConnectCallBack?) {
                     callBack.onError("have no storage or audio permission")
                 }
                 Logger.e(TAG ,"open camera failed, have no storage and audio permission")
-                return
+                //return
             }
             mMediaMuxer = Mp4Muxer(ctx, callBack, path, durationInSec)
             (mVideoProcess as? H264EncodeProcessor)?.apply {
