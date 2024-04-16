@@ -60,13 +60,36 @@ object CameraUtils {
     }
 
     fun hasAudioPermission(ctx: Context): Boolean{
-        val locPermission = ContextCompat.checkSelfPermission(ctx, Manifest.permission.RECORD_AUDIO)
-        return locPermission == PackageManager.PERMISSION_GRANTED
+//        val locPermission = ContextCompat.checkSelfPermission(ctx, Manifest.permission.RECORD_AUDIO)
+//        return locPermission == PackageManager.PERMISSION_GRANTED
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            val readPermission = ContextCompat.checkSelfPermission(ctx, Manifest.permission.RECORD_AUDIO)
+            return readPermission == PackageManager.PERMISSION_GRANTED
+        } else {
+            val audioPermission = ContextCompat.checkSelfPermission(ctx, Manifest.permission.READ_MEDIA_AUDIO)
+            val videoPermission = ContextCompat.checkSelfPermission(ctx, Manifest.permission.READ_MEDIA_VIDEO)
+            return audioPermission == PackageManager.PERMISSION_GRANTED && videoPermission == PackageManager.PERMISSION_GRANTED
+        }
+
     }
 
     fun hasStoragePermission(ctx: Context): Boolean{
-        val locPermission = ContextCompat.checkSelfPermission(ctx, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        return locPermission == PackageManager.PERMISSION_GRANTED
+//        val locPermission = ContextCompat.checkSelfPermission(ctx, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//        return locPermission == PackageManager.PERMISSION_GRANTED
+//
+//
+//        //版本判断，如果比android 13 就走正常的权限获取
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            val readPermission = ContextCompat.checkSelfPermission(ctx, Manifest.permission.READ_EXTERNAL_STORAGE)
+            val writePermission = ContextCompat.checkSelfPermission(ctx, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            return readPermission == PackageManager.PERMISSION_GRANTED && writePermission == PackageManager.PERMISSION_GRANTED
+        } else {
+            val audioPermission = ContextCompat.checkSelfPermission(ctx, Manifest.permission.READ_MEDIA_AUDIO)
+            val imagePermission = ContextCompat.checkSelfPermission(ctx, Manifest.permission.READ_MEDIA_IMAGES)
+            val videoPermission = ContextCompat.checkSelfPermission(ctx, Manifest.permission.READ_MEDIA_VIDEO)
+            return audioPermission == PackageManager.PERMISSION_GRANTED && imagePermission == PackageManager.PERMISSION_GRANTED && videoPermission == PackageManager.PERMISSION_GRANTED
+        }
     }
 
     fun hasCameraPermission(ctx: Context): Boolean{
