@@ -527,12 +527,23 @@ class MultiCameraClient(ctx: Context, callback: IDeviceConnectCallBack?) {
                     return@submit
                 }
                 val values = ContentValues()
-                values.put(MediaStore.Images.ImageColumns.TITLE, title)
-                values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, displayName)
-                values.put(MediaStore.Images.ImageColumns.DATA, path)
-                values.put(MediaStore.Images.ImageColumns.DATE_TAKEN, date)
-                values.put(MediaStore.Images.ImageColumns.LONGITUDE, location?.longitude)
-                values.put(MediaStore.Images.ImageColumns.LATITUDE, location?.latitude)
+                if(Build.VERSION.SDK_INT >= 29){
+                    values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, displayName)
+                    values.put(MediaStore.Images.ImageColumns.DATE_ADDED, System.currentTimeMillis() / 1000)
+                    values.put(MediaStore.Images.ImageColumns.DATE_TAKEN, date)
+                    values.put(MediaStore.Images.ImageColumns.IS_PENDING, true)
+                    values.put(MediaStore.Images.ImageColumns.LONGITUDE, location?.longitude)
+                    values.put(MediaStore.Images.ImageColumns.LATITUDE, location?.latitude)
+                }
+                else{
+                    values.put(MediaStore.Images.ImageColumns.TITLE, title)
+                    values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, displayName)
+                    values.put(MediaStore.Images.ImageColumns.DATE_ADDED, System.currentTimeMillis() / 1000)
+//                    values.put(MediaStore.Images.ImageColumns.DATA, path)
+//                    values.put(MediaStore.Images.ImageColumns.DATE_TAKEN, date)
+                    values.put(MediaStore.Images.ImageColumns.LONGITUDE, location?.longitude)
+                    values.put(MediaStore.Images.ImageColumns.LATITUDE, location?.latitude)
+                }
                 ctx.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
                 mMainHandler.post { callback.onComplete(path) }
                 if (Utils.debugCamera) { Logger.i(TAG, "captureImageInternal save path = $path") }
