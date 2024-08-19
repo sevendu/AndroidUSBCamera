@@ -832,11 +832,13 @@ public class UVCCamera {
      * @param hue [%]
      */
 	public synchronized void setHue(final int hue) {
-    	if (mNativePtr != 0) {
- 		   final float range = Math.abs(mHueMax - mHueMin);
- 		   if (range > 0)
- 			   nativeSetHue(mNativePtr, (int)(hue / 100.f * range) + mHueMin);
-    	}
+		nativeSetHue(mNativePtr, hue);
+
+//    	if (mNativePtr != 0) {
+// 		   final float range = Math.abs(mHueMax - mHueMin);
+// 		   if (range > 0)
+// 			   nativeSetHue(mNativePtr, (int)(hue / 100.f * range) + mHueMin);
+//    	}
     }
 
     /**
@@ -844,15 +846,17 @@ public class UVCCamera {
      * @return hue[%]
      */
 	public synchronized int getHue(final int hue_abs) {
-	   int result = 0;
-	   if (mNativePtr != 0) {
-		   nativeUpdateHueLimit(mNativePtr);
-		   final float range = Math.abs(mHueMax - mHueMin);
-		   if (range > 0) {
-			   result = (int)((hue_abs - mHueMin) * 100.f / range);
-		   }
-	   }
-	   return result;
+		return hue_abs;
+
+//	   int result = 0;
+//	   if (mNativePtr != 0) {
+//		   nativeUpdateHueLimit(mNativePtr);
+//		   final float range = Math.abs(mHueMax - mHueMin);
+//		   if (range > 0) {
+//			   result = (int)((hue_abs - mHueMin) * 100.f / range);
+//		   }
+//	   }
+//	   return result;
 	}
 
     /**
